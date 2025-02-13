@@ -1,0 +1,13 @@
+agent:
+  key: 2yt9xjxvti5zm6
+  registerUrl: https://platform.steadybit.com
+
+global:
+  clusterName: "minikube-ubuntu"
+
+extension-container:
+  container:
+    runtime: docker
+
+extension-kubernetes:
+  enabled: true

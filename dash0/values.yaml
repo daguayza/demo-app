@@ -1,0 +1,22 @@
+operator:
+  dash0Export:
+    enabled: true
+    endpoint: "ingress.eu-west-1.aws.dash0.com:4317"
+    #dataset: "demo-app"
+    secretRef:
+      name: dash0-authorization-secret
+      key: token
+  clusterName: "mini-kube"
+
+  # Optional settings based on their defaults
+  selfMonitoringEnabled: true
+  kubernetesInfrastructureMetricsCollectionEnabled: true
+
+  # Optional: Disable secret validation if Helm is rendering without a live cluster
+  disableSecretValidation: false
+
+# initContainerImage:
+#   repository: ghcr.io/dash0hq/instrumentation
+#   tag: "0.40.1"
+#   digest: "sha256:0953141e0b85c804061443a7c931b25b18f622d4cc4142f33540d14b0b826062"
+

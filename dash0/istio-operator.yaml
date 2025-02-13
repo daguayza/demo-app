@@ -1,0 +1,11 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  meshConfig:
+    enableTracing: true
+    defaultConfig:
+      proxyMetadata:
+        ISTIO_META_ENABLE_OTEL_TRACING: "1"
+        OTEL_EXPORTER_OTLP_ENDPOINT: "ingress.eu-west-1.aws.dash0.com:4317"
+        OTEL_EXPORTER_OTLP_HEADERS: "Authorization=Bearer auth_IpsjnhKJ72pLUXnqmcaWbHG49cQ4bAB6"
+
