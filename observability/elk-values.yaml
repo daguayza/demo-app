@@ -1,0 +1,51 @@
+clusterName: "minikube-ubuntu"
+replicas: 1  # Single-node cluster to save resources
+
+resources:
+  requests:
+    memory: "2Gi"
+    cpu: "1"
+  limits:
+    memory: "4Gi"
+    cpu: "2"
+
+esJavaOpts: "-Xms2g -Xmx4g"  # Match the resource limits
+
+volumeClaimTemplate:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 5Gi
+
+xpack:
+  security:
+    enabled: false  # Disable security for local setup
+  monitoring:
+    enabled: false
+  ml:
+    enabled: false
+
+persistence:
+  enabled: true
+  size: "5Gi"
+
+logstash:
+  enabled: true
+  resources:
+    requests:
+      memory: "500Mi"
+      cpu: "0.5"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+
+kibana:
+  enabled: true
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "500Mi"
+      cpu: "0.5"
+    limits:
+      memory: "1Gi"
+      cpu: "1"

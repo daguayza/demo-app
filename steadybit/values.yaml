@@ -1,6 +1,13 @@
 agent:
   key: 2yt9xjxvti5zm6
   registerUrl: https://platform.steadybit.com
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 120
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 10     
+
 
 global:
   clusterName: "minikube-ubuntu"
@@ -11,3 +18,5 @@ extension-container:
 
 extension-kubernetes:
   enabled: true
+
+

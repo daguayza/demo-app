@@ -1,0 +1,39 @@
+adminUser: "admin"
+adminPassword: "admin"  # Change for production use
+
+persistence:
+  enabled: true
+  storageClassName: "standard"
+  size: 1Gi
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "250m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: 'default'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+
+dashboards:
+  default:
+    OpenTelemetry:
+      gnetId: 14252
+      revision: 1
+      datasource: Prometheus
+    Kubernetes:
+      gnetId: 16263
+      revision: 1
+      datasource: Prometheus
