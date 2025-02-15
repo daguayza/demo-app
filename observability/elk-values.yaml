@@ -1,51 +1,111 @@
-clusterName: "minikube-ubuntu"
-replicas: 1  # Single-node cluster to save resources
+clusterName: "elasticsearch"
+antiAffinity: "soft"
 
+# Shrink default JVM heap.
+esJavaOpts: "-Xmx128m -Xms128m"
+
+# Allocate smaller chunks of memory per pod.
 resources:
   requests:
-    memory: "2Gi"
-    cpu: "1"
-  limits:
-    memory: "4Gi"
     cpu: "2"
+    memory: "1Gi"
+  limits:
+    cpu: "2"
+    memory: "1Gi"
 
-esJavaOpts: "-Xms2g -Xmx4g"  # Match the resource limits
-
+esJvmOptions:
+  jvm.options: |
+    -Xms1g
+    -Xmx4g
+# Request smaller persistent volumes.
 volumeClaimTemplate:
-  accessModes: ["ReadWriteOnce"]
+  accessModes: [ "ReadWriteOnce" ]
+  storageClassName: "standard"
   resources:
     requests:
-      storage: 5Gi
+      storage: 100M
+extraEnvs: 
+ - name: OTEL_SERVICE_NAME
+   value: "elasticsearch-service"
+ - name: OTEL_SERVICE_NAMESPACE
+   value: "observability"
+ - name: OTEL_SERVICE_VERSION
+   value: "1.0.0"
+ - name: xpack.security.enabled
+   value: "false"
+ - name: xpack.security.http.ssl.enabled
+   value: "false"
+ - name: xpack.security.transport.ssl.enabled
+   value: "false"
+ - name: xpack.security.http.ssl.client_authentication
+   value: "none"
+#  - name: discovery.type
+#    value: "single-node"
 
-xpack:
-  security:
-    enabled: false  # Disable security for local setup
-  monitoring:
-    enabled: false
-  ml:
-    enabled: false
+protocol: http
+esJvmOptions:
+  jvm.options: |
+    -Djava.security.manager 
+    -Djava.security.policy=/usr/share/elasticsearch/config/policy.file
+    -Xms4g
+    -Xmx4g
 
-persistence:
-  enabled: true
-  size: "5Gi"
+esConfig:
+  elasticsearch.yml: |
+    xpack.security.enabled: false
+    xpack.security.transport.ssl.enabled: false
+    xpack.security.http.ssl.enabled: false  
+    xpack.security.http.ssl.client_authentication: none  
 
-logstash:
-  enabled: true
-  resources:
-    requests:
-      memory: "500Mi"
-      cpu: "0.5"
-    limits:
-      memory: "1Gi"
-      cpu: "1"
+networkPolicy:
+  http:
+    enabled: false   # This means HTTP traffic is not filtered, unless you plan to enable specific access control
+  transport:
+    enabled: false   # This means transport traffic (internal Elasticsearch node communication) is not restricted
 
-kibana:
-  enabled: true
-  replicaCount: 1
-  resources:
-    requests:
-      memory: "500Mi"
-      cpu: "0.5"
-    limits:
-      memory: "1Gi"
-      cpu: "1"
+extraVolumes:
+  - name: security-policy
+    configMap:
+      name: security-policy-config
+
+extraVolumeMounts:
+  - name: security-policy
+    mountPath: /usr/share/elasticsearch/config/policy.file
+    subPath: policy.file
+
+
+
+# resources:
+#   requests:
+#     cpu: "4"
+#     memory: "6Gi"
+#   limits:
+#     cpu: "4"
+#     memory: "6Gi"
+
+# volumeClaimTemplate:
+#   accessModes: [ "ReadWriteOnce" ]
+#   storageClassName: "standard"
+#   resources:
+#     requests:
+#       storage: 100M
+
+# extraVolumes:
+#   - name: security-policy
+#     configMap:
+#       name: security-policy-config
+
+# extraVolumeMounts:
+#   - name: security-policy
+#     mountPath: /usr/share/elasticsearch/config/policy.file
+#     subPath: policy.file
+
+# extraEnvs: 
+#  - name: OTEL_SERVICE_NAME
+#    value: "elasticsearch-service"
+#  - name: OTEL_SERVICE_NAMESPACE
+#    value: "observability"
+#  - name: OTEL_SERVICE_VERSION
+#    value: "1.0.0"
+  
+
