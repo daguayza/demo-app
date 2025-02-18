@@ -26,3 +26,11 @@ spec:
   # The default value is true, so setting this to false prevents Prometheus-based metric collection.
   # Note: This does NOT affect the collection of OpenTelemetry-native metrics.
   prometheusScrapingEnabled: false
+
+
+
+# helm upgrade --install dash0-operator dash0-operator/dash0-operator --namespace dash0-system --create-namespace --values values.yaml 
+# kubectl apply -f dash0-monitoring.yaml -n demo 
+# kubectl apply -f dash0-monitoring.yaml -n dash0-system 
+# kubectl apply -f dash0-monitoring.yaml -n observability 
+
