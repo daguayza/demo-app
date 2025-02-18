@@ -77,14 +77,14 @@ echo "📦 Deploying Elasticsearch..."
 helm upgrade --install elasticsearch "$HELM_REPO_ELASTIC/elasticsearch" \
     --namespace "$NAMESPACE" --values "$VALUES_ELASTIC"
 
-delete_if_exists "logstash"
-echo "📦 Deploying Logstash..."
-helm upgrade --install logstash "$HELM_REPO_ELASTIC/logstash" \
-    --namespace "$NAMESPACE"
+# delete_if_exists "logstash"
+# echo "📦 Deploying Logstash..."
+# helm upgrade --install logstash "$HELM_REPO_ELASTIC/logstash" \
+#     --namespace "$NAMESPACE"
 
-delete_if_exists "kibana"
-echo "📦 Deploying Kibana..."
-helm upgrade --install kibana "$HELM_REPO_ELASTIC/kibana" \
-    --namespace "$NAMESPACE"
+# delete_if_exists "kibana"
+# echo "📦 Deploying Kibana..."
+# helm upgrade --install kibana "$HELM_REPO_ELASTIC/kibana" \
+#     --namespace "$NAMESPACE"
 
 echo "✅ Observability Stack installation complete with Dash0 monitoring!"

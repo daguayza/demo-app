@@ -2,7 +2,6 @@ operator:
   dash0Export:
     enabled: true
     endpoint: "ingress.eu-west-1.aws.dash0.com:4317"
-    #dataset: "demo-app"
     secretRef:
       name: dash0-authorization-secret
       key: token

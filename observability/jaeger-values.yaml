@@ -1,31 +1,33 @@
 allInOne:
-  enabled: true
-  image:
-    repository: jaegertracing/all-in-one
-    tag: "1.39"
-    pullPolicy: IfNotPresent
-    pullSecrets: []  # 👈 Explicitly set as an empty list
-  resources:
-    requests:
-      memory: "500Mi"
-      cpu: "250m"
-    limits:
-      memory: "1Gi"
-      cpu: "500m"
+  enabled: false  
 
 storage:
-  type: memory  # Use in-memory storage for Minikube
-  size: 2Gi
+  type: elasticsearch  
+  elasticsearch:
+    host: elasticsearch-master
+    port: 9200
+    scheme: http
+    usePassword: true
+    user: elastic
+    password: changeme
 
 collector:
-  enabled: false  # 👈 Disable Jaeger Collector since OTel Collector handles traces
+  enabled: false  
 
 query:
-  enabled: true
+  enabled: true 
   resources:
     requests:
-      memory: "500Mi"
-      cpu: "250m"
+      memory: "400Mi"
+      cpu: "200m"
     limits:
-      memory: "1Gi"
-      cpu: "500m"
+      memory: "800Mi"
+      cpu: "400m"
+
+agent:
+  enabled: false
+
+provisionDataStore:
+  cassandra: false
+  elasticsearch: false
+  kafka: false

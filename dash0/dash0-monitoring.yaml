@@ -3,7 +3,26 @@ kind: Dash0Monitoring
 metadata:
   name: dash0-monitoring-resource
 spec:
+  # This setting controls automatic instrumentation of workloads for tracing and observability.
+  # "all" means all workloads in the namespace will be instrumented automatically.
+  # Other possible values may exist, such as "created-and-updated," which applies only to newly created and updated workloads.
   instrumentWorkloads: all
+  
+  # Disables the synchronization of Perses dashboards in the target namespace.
+  # If enabled (true), the operator will automatically detect Perses dashboard resources
+  # and create corresponding dashboards in Dash0 via its API.
+  # The default value is true, so setting this to false opts out of this synchronization.
   synchronizePersesDashboards: false
+  
+  # Disables the synchronization of Prometheus rule resources in the target namespace.
+  # If enabled (true), the operator will monitor Prometheus rule resources and create
+  # equivalent check rules in Dash0 via its API.
+  # The default value is true, so setting this to false opts out of this synchronization.
   synchronizePrometheusRules: false
+  
+  # Disables Prometheus metric scraping for workloads in the namespace.
+  # If enabled (true), the Dash0 OpenTelemetry collector will scrape metrics from
+  # pods based on their prometheus.io/scrape annotations via the OpenTelemetry Prometheus receiver.
+  # The default value is true, so setting this to false prevents Prometheus-based metric collection.
+  # Note: This does NOT affect the collection of OpenTelemetry-native metrics.
   prometheusScrapingEnabled: false

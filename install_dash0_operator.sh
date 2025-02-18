@@ -53,7 +53,7 @@ helm upgrade --install "$CHART_NAME" "$HELM_REPO_NAME/$CHART_NAME" \
 
 # Wait for Dash0 Operator to be fully deployed before applying monitoring
 echo "⏳ Waiting for Dash0 Operator to be ready..."
-while [[ $(kubectl get pods -n "$NAMESPACE" -l app=dash0-operator -o jsonpath='{.items[*].status.phase}') != "Running" ]]; do
+while [[ $(kubectl get pods -n "$NAMESPACE" -l app.kubernetes.io/name=dash0-operator -o jsonpath='{.items[*].status.phase}') != "Running" ]]; do
     echo "⏳ Dash0 Operator is not ready yet. Retrying in 5 seconds..."
     sleep 5
 done

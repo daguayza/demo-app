@@ -1,10 +1,13 @@
 adminUser: "admin"
-adminPassword: "admin"  # Change for production use
+adminPassword: "admin"  # ⚠️ Change this in production!
+
+service:
+  type: ClusterIP
+  port: 3000
+
 
 persistence:
-  enabled: true
-  storageClassName: "standard"
-  size: 1Gi
+  enabled: false  # 🔹 Disabled since you don't need persistent storage
 
 resources:
   requests:
@@ -32,8 +35,31 @@ dashboards:
     OpenTelemetry:
       gnetId: 14252
       revision: 1
-      datasource: Prometheus
+      datasource: OpenTelemetry  # 🔹 Updated to OpenTelemetry
     Kubernetes:
       gnetId: 16263
       revision: 1
-      datasource: Prometheus
+      datasource: Elasticsearch  # 🔹 Updated to OpenTelemetry
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: OpenTelemetry
+        type: prometheus 
+        url: http://dash0-operator-opentelemetry-collector-service.dash0-system:4317
+
+        access: proxy
+        isDefault: true
+      - name: Jaeger
+        type: jaeger
+        url: http://jaeger-query.observability:16686
+        access: proxy
+
+      - name: Elasticsearch
+        type: elasticsearch
+        url: http://elasticsearch-master.observability:9200
+        access: proxy
+        jsonData:
+          esVersion: 7
+          timeField: "@timestamp"
